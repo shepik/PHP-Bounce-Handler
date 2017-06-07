@@ -297,7 +297,7 @@ class BounceHandler {
 	    $tmp = array();
 	    foreach ($this->output as $arr) {
 		    if (empty($arr['recipient']) && empty($arr['status']) && empty($arr['action'])) continue;
-		    if (!empty($dCode)) $arr['d-code'] = $dCode;
+		    if (!empty($dCode)) $arr['dcode'] = $dCode;
 		    $tmp[] = $arr;
 	    }
 	    $this->output = $tmp;
