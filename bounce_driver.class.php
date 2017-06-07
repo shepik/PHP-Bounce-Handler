@@ -779,7 +779,6 @@ class BounceHandler {
     }
 
     public function get_reason_by_statuscode($code) {
-	    if ($code == '5.0.0') return 'unknown error';
         if ($code == '5.7.1') return 'filtered';
         if (in_array($code, ['4.2.0', '4.2.2', '4.3.2'])) return 'notaccept';
         return 'userunknown';
