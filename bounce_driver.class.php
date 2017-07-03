@@ -280,13 +280,28 @@ class BounceHandler {
         $this->output[0]['messageid'] = empty($this->original_letter_header['Message-id']) ? '' : $this->original_letter_header['Message-id'];
         $this->output[0]['subject'] = empty($this->original_letter_header['Subject']) ? '' : $this->original_letter_header['Subject'];
 
-        // remove empty array indices
-        $tmp = array();
-        foreach ($this->output as $arr) {
-            if (empty($arr['recipient']) && empty($arr['status']) && empty($arr['action'])) continue;
-            $tmp[] = $arr;
-        }
-        $this->output = $tmp;
+	    // добавим Diagnostic-Code (только первый)
+	    $dCode = null;
+	    foreach ($this->body_hash as $line) {
+		    if (preg_match('~^Diagnostic\-Code:(.*)$~isuD', $line, $m)) {
+			    if (preg_match('~([0-9][0-9][0-9])(.*)$~isuD', $m[1], $m)) {
+				    $dCode = [
+					    'code' => (int) $m[1],
+					    'text' => trim($m[2]),
+				    ];
+				    break;
+			    }
+		    }
+	    }
+
+	    // remove empty array indices
+	    $tmp = array();
+	    foreach ($this->output as $arr) {
+		    if (empty($arr['recipient']) && empty($arr['status']) && empty($arr['action'])) continue;
+		    if (!empty($dCode)) $arr['dcode'] = $dCode;
+		    $tmp[] = $arr;
+	    }
+	    $this->output = $tmp;
 
         // accessors
         /*if it is an FBL, you could use the class variables to access the
