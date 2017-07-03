@@ -289,6 +289,7 @@ class BounceHandler {
 					    'code' => (int) $m[1],
 					    'text' => trim($m[2]),
 				    ];
+				    break;
 			    }
 		    }
 	    }
